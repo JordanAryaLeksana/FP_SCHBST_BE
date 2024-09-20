@@ -1,15 +1,28 @@
+import express from 'express';
+import cors from 'cors'; // Import cors
+import dotenv from 'dotenv';
+import router from './src/routes/geminiRoutes.js';
+import handleError from './src/middleware/errorHandler.js';
 
-import express from 'express'
+dotenv.config();
 
+const app = express();
+const PORT = process.env.PORT || 8000;
 
+app.use(cors());
+app.use(express.json());
 
-const app = express()
+app.use('/api/generate', router);
 
+// Error handling middleware
+app.use(handleError);
 
-const PORT = process.env.PORT || 8000
+// Route untuk homepage
+app.get('/', (req, res) => {
+  res.send('HELLO WORLD');
+});
 
-
-
+// Menjalankan server
 app.listen(PORT, () => {
-    console.log(`Server Running on PORT ${PORT}`)
-})
+  console.log(`Server running on PORT ${PORT}`);
+});
